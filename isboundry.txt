@@ -1,0 +1,23 @@
+float  Parser::is_boundry(float min, vector<token>& exp, float i, float previous_gap)
+{
+    if (i >= 0.2)
+    {
+        return min + 0.5; //plus 0.5 becuase its it the middle, assymptot wasnt found
+    }
+
+    vector<token>l; vector<token>r;
+    vector<token>left = assignValue(exp, min + i);
+    vector<token>right = assignValue(exp, min + 1 - i);
+    token left_token = Solve(left); token right_token = Solve(right);
+    float l_val = 0; float r_val = 0;
+    if (left_token.token_type == INTEGER_TYPE) { l_val = left_token.type.Ival; }
+    if (left_token.token_type == FLOAT_TYPE) { l_val = left_token.type.Fval; }
+    if (right_token.token_type == INTEGER_TYPE) { r_val = right_token.type.Ival; }
+    if (right_token.token_type == FLOAT_TYPE) { r_val = right_token.type.Fval; }
+    float new_gap = fabs(r_val - l_val);
+    if (previous_gap >=  new_gap)   return X_MAX + 1;
+    return is_boundry(min, exp, i + 0.01, new_gap);
+
+
+
+}
